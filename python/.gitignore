@@ -18,3 +18,5 @@ trader/
 main.py
 tests/
 run_tests.py
+
+!api/main.py
