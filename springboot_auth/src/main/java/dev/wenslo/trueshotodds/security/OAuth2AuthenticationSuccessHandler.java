@@ -26,7 +26,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private final UserService userService;
 
-    @Value("${app.mail.base-url}")
+    @Value("${BASE_URL}")
     private String baseUrl;
 
     @Override
