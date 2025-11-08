@@ -78,8 +78,8 @@ services:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_DATASOURCE_HOSTNAME: mysql
       SPRING_REDIS_HOST: redis
-#    ports:
-#      - "8080:8080"
+    ports:
+      - "8282:8080"
     depends_on:
       redis:
         condition: service_healthy
