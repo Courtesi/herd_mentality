@@ -8,6 +8,9 @@ Change `frontend/Dockerfile`: \
 Change `python/.env`: \
 `ENVIRONMENT=development` to `ENVIRONMENT=production` \
 Add `keys/kalshi_rsa_key.key`
+Change `springboot_auth/.env`: \
+`BASE_URL=http://localhost:5173` to `BASE_URL=https://herdmentality.curtischang.dev`
+`CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3001,http://127.0.0.1:5173,http://127.0.0.1:3001` to `CORS_ALLOWED_ORIGINS=https://herdmentality.curtischang.dev,http://localhost:5173,http://127.0.0.1:5173`
 
 ## Architecture
 
