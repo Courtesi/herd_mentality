@@ -1,0 +1,119 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: pi-redis
+#    ports:
+#      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      timeout: 10s
+      retries: 5
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0.19
+    container_name: pi-mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATASOURCE_PASSWORD}
+      MYSQL_DATABASE: pidb
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 10
+#    ports:
+#      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - app-network
+
+  # Python FastAPI service
+  fastapi:
+    build:
+      context: ./python
+      dockerfile: Dockerfile
+    container_name: pi-fastapi
+    env_file:
+      - ./python/.env
+    environment:
+      REDIS_HOST: redis
+      MYSQL_HOST: mysql
+      SPRINGBOOT_URL: http://auth:8080
+      KALSHI_RSA_KEY_PATH: /app/keys/kalshi_rsa_key.key
+#    ports:
+#      - "8000:8000"
+    volumes:
+      - ./python/keys:/app/keys:ro
+    depends_on:
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/python/health').read()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  auth:
+    build:
+      context: ./springboot_auth
+      dockerfile: Dockerfile
+    container_name: pi-auth
+    env_file:
+      - ./springboot_auth/.env
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_HOSTNAME: mysql
+      SPRING_REDIS_HOST: redis
+#    ports:
+#      - "8080:8080"
+    depends_on:
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Frontend React service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pi-frontend
+    env_file:
+      - ./frontend/.env
+    environment:
+      VITE_PYTHON_URL: http://fastapi:8000
+      VITE_SPRINGBOOT_URL: http://auth:8080
+    ports:
+      - "5173:3000"
+    networks:
+      - app-network
+    restart: unless-stopped
+    depends_on:
+      fastapi:
+        condition: service_healthy
+
+volumes:
+  mysql-data:
+  redis-data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge

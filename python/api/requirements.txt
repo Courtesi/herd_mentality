@@ -1,0 +1,26 @@
+# FastAPI and core dependencies
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# Database
+sqlalchemy==2.0.23
+pymysql==1.1.0
+alembic==1.13.1
+
+# Redis caching
+redis==5.0.1
+hiredis==2.2.3
+
+# HTTP client for Kalshi API
+httpx==0.25.2
+aiofiles==23.2.0
+
+# Additional dependencies for SSE and async operations
+sse-starlette==1.8.2
+python-multipart==0.0.6
+
+# Development
+pytest==7.4.3
+pytest-asyncio==0.21.1

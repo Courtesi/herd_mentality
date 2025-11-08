@@ -1,0 +1,8 @@
+**/.claude
+**/.idea
+**/.env
+
+**/.DS_Store
+Thumbs.db
+**/*.swp
+**/*.log
