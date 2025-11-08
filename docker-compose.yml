@@ -98,8 +98,8 @@ services:
     env_file:
       - ./frontend/.env
     environment:
-      VITE_PYTHON_URL: http://fastapi:8000
-      VITE_SPRINGBOOT_URL: http://auth:8080
+      VITE_PYTHON_URL: https://herdmentality.curtischang.dev
+      VITE_SPRINGBOOT_URL: https://herdmentality.curtischang.dev
     ports:
       - "5173:3000"
     networks:
