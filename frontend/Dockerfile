@@ -1,6 +1,10 @@
 # Multi-stage build for optimized production image
 FROM node:24-alpine3.21 AS build
 
+# Build arguments for environment variables
+ARG VITE_PYTHON_URL
+ARG VITE_SPRINGBOOT_URL
+
 # Set working directory
 WORKDIR /app
 
@@ -14,7 +18,7 @@ RUN npm ci --only=production
 # Copy source code
 COPY . .
 
-# Build the application
+# Build the application with environment variables
 RUN npm run build
 
 # Production stage

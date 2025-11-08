@@ -94,6 +94,9 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        VITE_PYTHON_URL: https://herdmentality.curtischang.dev
+        VITE_SPRINGBOOT_URL: https://herdmentality.curtischang.dev
     container_name: pi-frontend
     env_file:
       - ./frontend/.env
