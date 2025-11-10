@@ -1,6 +1,6 @@
 # Prediction Investor
 
-A multi-layer application for intelligent prediction market trading, combining a React frontend, FastAPI backend, and Spring Boot authentication service. Find at [herdmentality.curtischang.dev](herdmentality.curtischang.dev)
+A multi-layer application for intelligent prediction market trading, combining a React frontend, FastAPI backend, and Spring Boot authentication service. Find at [herdmentality.curtischang.dev](https://herdmentality.curtischang.dev).
 
 ## Important!!
 Change `frontend/Dockerfile`: \
