@@ -161,19 +161,16 @@ async def test_webhook_system(background_tasks: BackgroundTasks):
     """
     try:
         test_payload = BotStatusWebhook(
-            status="online",
+            is_online=False,
             bot_id="test",
-            message="Test webhook notification",
             timestamp=time.time()
         )
 
         # Process like a real webhook
         webhook_data = {
-            "status": "online",
+            "is_online": "online",
             "bot_id": "test",
             "timestamp": test_payload.timestamp,
-            "message": test_payload.message,
-            "source": "webhook_test"
         }
 
         background_tasks.add_task(
