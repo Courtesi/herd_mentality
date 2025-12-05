@@ -63,7 +63,7 @@ class PollScheduler:
 
 		self.scheduler.start()
 		self.is_running = True
-		logger.info("Poll scheduler started - will create polls every 36 hours and check for expired polls every hour")
+		logger.info("Poll scheduler started - will check for expired polls every hour and create new poll if expired polls found")
 
 		# Create first poll immediately (non-blocking, don't fail startup if it errors)
 		try:
